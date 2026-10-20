@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nearby Friends</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- LOGIN SCREEN -->
+  <main id="screen-auth" class="screen hidden">
+    <div class="card">
+      <h1>Nearby Friends</h1>
+      <p class="muted">You’re not alone. Someone nearby is looking for a friend too.</p>
+
+      <div id="auth-step-email">
+        <label for="email">Your email</label>
+        <input id="email" type="email" placeholder="you@example.com" autocomplete="email">
+        <label class="check">
+          <input id="age-check" type="checkbox">
+          <span>I confirm I am 18 or older and agree to the Terms and Privacy Policy.</span>
+        </label>
+        <button id="btn-send-code" class="primary">Send me a code</button>
+      </div>
+
+      <div id="auth-step-code" class="hidden">
+        <p class="muted">We sent a 6-digit code to your email. Enter it below.</p>
+        <label for="code">6-digit code</label>
+        <input id="code" type="text" inputmode="numeric" maxlength="8" placeholder="123456" autocomplete="one-time-code">
+        <button id="btn-verify" class="primary">Log in</button>
+        <button id="btn-back" class="link">Use a different email</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- PROFILE SCREEN -->
+  <main id="screen-profile" class="screen hidden">
+    <div class="card">
+      <h2 id="profile-title">Create your profile</h2>
+
+      <div class="avatar-row">
+        <img id="avatar-preview" class="avatar big hidden" alt="Your photo">
+        <div id="avatar-placeholder" class="avatar big placeholder">?</div>
+        <label class="file-btn">Choose photo
+          <input id="photo" type="file" accept="image/*" hidden>
+        </label>
+      </div>
+
+      <label for="name">Display name</label>
+      <input id="name" type="text" maxlength="40" placeholder="Your name">
+
+      <label for="bio">Short bio <span id="bio-count" class="muted">0/150</span></label>
+      <textarea id="bio" maxlength="150" rows="3" placeholder="Say a little about yourself"></textarea>
+
+      <label>Interests</label>
+      <div id="interest-list" class="chips"></div>
+
+      <label for="looking">Looking for</label>
+      <select id="looking"></select>
+
+      <label class="check">
+        <input id="incognito" type="checkbox">
+        <span>Incognito mode: hide my name, photo and bio. Others see a random alias like “Blue Fox”.</span>
+      </label>
+
+      <button id="btn-save" class="primary">Save profile</button>
+      <button id="btn-cancel-profile" class="link hidden">Cancel</button>
+    </div>
+  </main>
+
+  <!-- NEARBY SCREEN -->
+  <main id="screen-nearby" class="screen hidden">
+    <div class="topbar">
+      <h2>Nearby</h2>
+      <button id="btn-loc-toggle" class="small">Location: …</button>
+    </div>
+
+    <div id="radius-list" class="chips"></div>
+
+    <p id="nearby-status" class="muted center"></p>
+    <div id="nearby-list"></div>
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav id="nav" class="nav hidden">
+    <button id="nav-nearby">Nearby</button>
+    <button id="nav-profile">My Profile</button>
+    <button id="nav-logout">Log out</button>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
