@@ -11,8 +11,6 @@ Whether you're hoping for a friendly chat, someone to spend time with, or a new 
 ---
 
 ## ✨ Features
-
-- 📧 **Passwordless sign-in**: log in with a 6-digit code sent to your email
 - 🧑 **Your own profile**: add a photo, display name, short bio (up to 150 characters), and interests
 - 🤝 **Say what you're looking for**: a chat, company, or a new friendship
 - 🕶️ **Incognito mode**: hide your name, photo, and bio. Others see only a random alias like "Blue Fox"
