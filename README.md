@@ -50,9 +50,6 @@ Neighbo is an early-stage project and a work in progress. I'm building it for fu
 
 Suggestions and bug reports are welcome. Open an [issue](../../issues) or submit a pull request.
 
-## 📄 License
-
-Add your license here (for example, MIT).
 
 ---
 
