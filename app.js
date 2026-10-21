@@ -22,7 +22,6 @@ let radius = 5;
 let locationOn = localStorage.getItem("locationOn") !== "off";
 let selectedInterests = [];
 let newPhotoBlob = null;
-let pendingEmail = "";
 
 // ---------- Helpers ----------
 const $ = (id) => document.getElementById(id);
@@ -61,39 +60,40 @@ async function compressImage(file, maxSize = 512) {
   return new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.8));
 }
 
-// ---------- LOGIN (email OTP) ----------
-$("btn-send-code").onclick = async () => {
+// ---------- LOGIN (email + password, no email sent) ----------
+function readLoginForm() {
   const email = $("email").value.trim();
-  if (!email) return toast("Please enter your email.", true);
+  const password = $("password").value;
+  if (!email) { toast("Please enter your email.", true); return null; }
+  if (password.length < 8) { toast("Password must be at least 8 characters.", true); return null; }
+  return { email, password };
+}
+
+$("btn-signup").onclick = async () => {
+  const f = readLoginForm();
+  if (!f) return;
   if (!$("age-check").checked) return toast("Please confirm you are 18 or older.", true);
 
-  $("btn-send-code").disabled = true;
-  const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
-  $("btn-send-code").disabled = false;
+  $("btn-signup").disabled = true;
+  const { data, error } = await sb.auth.signUp({ email: f.email, password: f.password });
+  $("btn-signup").disabled = false;
 
   if (error) return toast(error.message, true);
-  pendingEmail = email;
-  $("auth-step-email").classList.add("hidden");
-  $("auth-step-code").classList.remove("hidden");
-  toast("Code sent. Check your email (and spam folder).");
+  if (!data.session) {
+    toast("This email may already have an account. Try Log in instead.", true);
+  }
+  // If it worked, onAuthStateChange below continues the flow
 };
 
-$("btn-verify").onclick = async () => {
-  const token = $("code").value.trim();
-  if (!token) return toast("Please enter the code.", true);
+$("btn-login").onclick = async () => {
+  const f = readLoginForm();
+  if (!f) return;
 
-  $("btn-verify").disabled = true;
-  const { error } = await sb.auth.verifyOtp({ email: pendingEmail, token, type: "email" });
-  $("btn-verify").disabled = false;
+  $("btn-login").disabled = true;
+  const { error } = await sb.auth.signInWithPassword({ email: f.email, password: f.password });
+  $("btn-login").disabled = false;
 
   if (error) return toast(error.message, true);
-  // onAuthStateChange below continues the flow
-};
-
-$("btn-back").onclick = () => {
-  $("auth-step-code").classList.add("hidden");
-  $("auth-step-email").classList.remove("hidden");
-  $("code").value = "";
 };
 
 // ---------- PROFILE ----------
@@ -375,20 +375,13 @@ async function afterLogin(session) {
 }
 
 sb.auth.onAuthStateChange((event, session) => {
-  if (event === "SIGNED_OUT" || !session) {
+  if (!session) {
     user = null;
     profile = null;
-    $("auth-step-code").classList.add("hidden");
-    $("auth-step-email").classList.remove("hidden");
-    $("code").value = "";
+    $("password").value = "";
     showScreen("auth");
-  } else if (event === "SIGNED_IN" && (!user || user.id !== session.user.id)) {
+  } else if (!user || user.id !== session.user.id) {
     // Delay so Supabase finishes setting the session before we query
     setTimeout(() => afterLogin(session), 0);
   }
 });
-
-(async () => {
-  const { data } = await sb.auth.getSession();
-  if (!data.session) showScreen("auth");
-})();
