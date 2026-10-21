@@ -15,23 +15,19 @@
       <h1>Nearby Friends</h1>
       <p class="muted">You’re not alone. Someone nearby is looking for a friend too.</p>
 
-      <div id="auth-step-email">
-        <label for="email">Your email</label>
-        <input id="email" type="email" placeholder="you@example.com" autocomplete="email">
-        <label class="check">
-          <input id="age-check" type="checkbox">
-          <span>I confirm I am 18 or older and agree to the Terms and Privacy Policy.</span>
-        </label>
-        <button id="btn-send-code" class="primary">Send me a code</button>
-      </div>
+      <label for="email">Your email</label>
+      <input id="email" type="email" placeholder="you@example.com" autocomplete="email">
 
-      <div id="auth-step-code" class="hidden">
-        <p class="muted">We sent a 6-digit code to your email. Enter it below.</p>
-        <label for="code">6-digit code</label>
-        <input id="code" type="text" inputmode="numeric" maxlength="8" placeholder="123456" autocomplete="one-time-code">
-        <button id="btn-verify" class="primary">Log in</button>
-        <button id="btn-back" class="link">Use a different email</button>
-      </div>
+      <label for="password">Password <span class="muted">(at least 8 characters)</span></label>
+      <input id="password" type="password" placeholder="Your password" autocomplete="current-password">
+
+      <label class="check">
+        <input id="age-check" type="checkbox">
+        <span>I confirm I am 18 or older and agree to the Terms and Privacy Policy. (Needed only when creating an account.)</span>
+      </label>
+
+      <button id="btn-signup" class="primary">Create account</button>
+      <button id="btn-login" class="link">I already have an account. Log in</button>
     </div>
   </main>
 
